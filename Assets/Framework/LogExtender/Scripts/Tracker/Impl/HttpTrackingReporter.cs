@@ -16,7 +16,7 @@ using UnityEngine.Assertions;
 
 namespace WenQu
 {
-
+    //TODO:这个应该用Helper，不用做单例
     public class HttpTrackingReporter : Singleton<HttpTrackingReporter>, ITrackingReporter
     {
         private void Report(Dictionary<string, string> dict, string url, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
