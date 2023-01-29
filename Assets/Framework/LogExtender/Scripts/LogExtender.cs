@@ -2,7 +2,7 @@
  * @Author: NickPansh
  * @Date: 2023-01-27 06:50:53
  * @LastEditors: NickPansh
- * @LastEditTime: 2023-01-27 20:37:46
+ * @LastEditTime: 2023-01-29 15:19:38
  * @FilePath: \LogExtender\Assets\Framework\LogExtender\Scripts\LogExtender.cs
  * @Description: Unity日志拓展类
  * @
@@ -33,7 +33,7 @@ namespace WenQu
 
         #region  properties
         // 自定义日志文件路径
-        public static string _pathCustomLog;
+        public static string pathCustomLog { get; private set; }
 
         public static LogExtender Instance { get; private set; }
         /// <summary>
@@ -60,22 +60,19 @@ namespace WenQu
                 Instance = this;
                 DontDestroyOnLoad(this);
                 // 控制日志等级
-                if (Debug.isDebugBuild)
-                {
-                    Debug.unityLogger.filterLogType = conf.devLogType;
-                }
-                else
-                {
-                    Debug.unityLogger.filterLogType = conf.releaseLogType;
-                }
+                Debug.unityLogger.filterLogType = Debug.isDebugBuild ? conf.devLogType : conf.releaseLogType;
 
-                // 加载FileAppender
-                LoadFileAppender();
+                // 开发环境且选项开启才初始化fileAppender
+                if (conf.logToCustomFileWhenDev && Debug.isDebugBuild)
+                {
+                    LoadFileAppender();
+                }
                 // 接收log线程
                 Application.logMessageReceivedThreaded += HandleLog;
             }
-        }
 
+        }
+       
         private void OnDestroy()
         {
             Application.logMessageReceivedThreaded -= HandleLog;
@@ -89,12 +86,8 @@ namespace WenQu
 #else
            string  fileDir = Application.persistentDataPath;
 #endif
-            _pathCustomLog = Path.Join(fileDir, conf.customFileName);
-            //开发环境且选项开启才初始化fileAppender
-            if (Debug.isDebugBuild && conf.logToCustomFileWhenDev)
-            {
-                _fileAppender = new FileAppender(_pathCustomLog, conf.encodeFormat);
-            }
+            pathCustomLog = Path.Join(fileDir, conf.customFileName);
+            _fileAppender = new FileAppender(pathCustomLog, conf.encodeFormat);
         }
 
         /// <summary>

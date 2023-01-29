@@ -1,37 +1,76 @@
-﻿[2023.01.27 20:25:18,965]|Log  |:上报事件。eventId=1,dict=	 at LogExtender.cs:1
-[2023.01.27 20:25:18,973]|Log  |:这是一条log	 at TestLogger.cs:1
-[2023.01.27 20:25:18,974]|Error|:这是一条报错
-0x00007ff69a454f2d (Unity) StackWalker::GetCurrentCallstack
-0x00007ff69a45bae9 (Unity) StackWalker::ShowCallstack
-0x00007ff69b3f1783 (Unity) GetStacktrace
-0x00007ff69baad61d (Unity) DebugStringToFile
-0x00007ff699579d82 (Unity) DebugLogHandler_CUSTOM_Internal_Log
-0x000002be0771a49a (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
-0x000002be0771a30b (Mono JIT Code) UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-0x000002be077374de (Mono JIT Code) UnityEngine.Logger:Log (UnityEngine.LogType,object)
-0x000002be077379da (Mono JIT Code) UnityEngine.Debug:LogError (object)
-0x000002be0771735b (Mono JIT Code) [TestLogger.cs:14] TestLogger:Start () 
-0x000002be07e1ed48 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr)
-0x00007ffd522efeb4 (mono-2.0-bdwgc) [mini-runtime.c:3445] mono_jit_runtime_invoke 
-0x00007ffd5222e764 (mono-2.0-bdwgc) [object.c:3066] do_runtime_invoke 
-0x00007ffd5222e8fc (mono-2.0-bdwgc) [object.c:3113] mono_runtime_invoke 
-0x00007ff69a379224 (Unity) scripting_method_invoke
-0x00007ff69a358aa4 (Unity) ScriptingInvocation::Invoke
-0x00007ff69a34854e (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
-0x00007ff69a348656 (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
-0x00007ff69a342b82 (Unity) MonoBehaviour::DelayedStartCall
-0x00007ff699e315c4 (Unity) DelayedCallManager::Update
-0x00007ff69a0454a9 (Unity) `InitPlayerLoopCallbacks'::`2'::EarlyUpdateScriptRunDelayedStartupFrameRegistrator::Forward
-0x00007ff69a02bfaa (Unity) ExecutePlayerLoop
-0x00007ff69a02c136 (Unity) ExecutePlayerLoop
-0x00007ff69a032259 (Unity) PlayerLoop
-0x00007ff69afa39a9 (Unity) PlayerLoopController::UpdateScene
-0x00007ff69af8ec74 (Unity) PlayerLoopController::EnterPlayMode
-0x00007ff69af9ea37 (Unity) PlayerLoopController::SetIsPlaying
-0x00007ff69afa1e39 (Unity) Application::TickTimer
-0x00007ff69b3f791a (Unity) MainMessageLoop
-0x00007ff69b3fc1eb (Unity) WinMain
-0x00007ff69c7ce2de (Unity) __scrt_common_main_seh
-0x00007ffdfb0626bd (KERNEL32) BaseThreadInitThunk
-0x00007ffdfc5cdfb8 (ntdll) RtlUserThreadStart
+﻿[2023.01.29 15:22:50,572]|Log  |LogExtender.cs:1|:上报事件。eventId=1,dict=
+[2023.01.29 15:22:50,577]|Log  |TestLogger.cs:1|:这是一条log,参数是0
+[2023.01.29 15:22:50,577]|Error|:这是一条报错
+0x00007ff752ee4f2d (Unity) StackWalker::GetCurrentCallstack
+0x00007ff752eebae9 (Unity) StackWalker::ShowCallstack
+0x00007ff753e81783 (Unity) GetStacktrace
+0x00007ff75453d61d (Unity) DebugStringToFile
+0x00007ff752009d82 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x00000122672d355a (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+0x00000122672d33eb (Mono JIT Code) UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+0x00000122672e8dce (Mono JIT Code) UnityEngine.Logger:Log (UnityEngine.LogType,object)
+0x00000122672e8b2a (Mono JIT Code) UnityEngine.Debug:LogError (object)
+0x00000122672d06cb (Mono JIT Code) [TestLogger.cs:13] TestLogger:Start () 
+0x0000012341f037c8 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr)
+0x00007ffb8ab3feb4 (mono-2.0-bdwgc) [mini-runtime.c:3445] mono_jit_runtime_invoke 
+0x00007ffb8aa7e764 (mono-2.0-bdwgc) [object.c:3066] do_runtime_invoke 
+0x00007ffb8aa7e8fc (mono-2.0-bdwgc) [object.c:3113] mono_runtime_invoke 
+0x00007ff752e09224 (Unity) scripting_method_invoke
+0x00007ff752de8aa4 (Unity) ScriptingInvocation::Invoke
+0x00007ff752dd854e (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
+0x00007ff752dd8656 (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
+0x00007ff752dd2b82 (Unity) MonoBehaviour::DelayedStartCall
+0x00007ff7528c15c4 (Unity) DelayedCallManager::Update
+0x00007ff752ad54a9 (Unity) `InitPlayerLoopCallbacks'::`2'::EarlyUpdateScriptRunDelayedStartupFrameRegistrator::Forward
+0x00007ff752abbfaa (Unity) ExecutePlayerLoop
+0x00007ff752abc136 (Unity) ExecutePlayerLoop
+0x00007ff752ac2259 (Unity) PlayerLoop
+0x00007ff753a339a9 (Unity) PlayerLoopController::UpdateScene
+0x00007ff753a1ec74 (Unity) PlayerLoopController::EnterPlayMode
+0x00007ff753a2ea37 (Unity) PlayerLoopController::SetIsPlaying
+0x00007ff753a31e39 (Unity) Application::TickTimer
+0x00007ff753e8791a (Unity) MainMessageLoop
+0x00007ff753e8c1eb (Unity) WinMain
+0x00007ff75525e2de (Unity) __scrt_common_main_seh
+0x00007ffc3afa26bd (KERNEL32) BaseThreadInitThunk
+0x00007ffc3bc4dfb8 (ntdll) RtlUserThreadStart
+
+[2023.01.29 15:22:50,579]|Warning|:这是一条warning
+UnityEngine.Debug:LogWarning (object)
+TestLogger:Start () (at Assets/Framework/LogExtender/Scripts/Test/TestLogger.cs:14)
+
+[2023.01.29 15:22:50,579]|Assert|:这是一条断言
+0x00007ff752ee4f2d (Unity) StackWalker::GetCurrentCallstack
+0x00007ff752eebae9 (Unity) StackWalker::ShowCallstack
+0x00007ff753e81783 (Unity) GetStacktrace
+0x00007ff75453d61d (Unity) DebugStringToFile
+0x00007ff752009d82 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x00000122672d355a (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+0x00000122672d33eb (Mono JIT Code) UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+0x00000122672e8dce (Mono JIT Code) UnityEngine.Logger:Log (UnityEngine.LogType,object)
+0x00000122672e93cd (Mono JIT Code) UnityEngine.Debug:LogAssertion (object)
+0x00000122672d074b (Mono JIT Code) [TestLogger.cs:15] TestLogger:Start () 
+0x0000012341f037c8 (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr)
+0x00007ffb8ab3feb4 (mono-2.0-bdwgc) [mini-runtime.c:3445] mono_jit_runtime_invoke 
+0x00007ffb8aa7e764 (mono-2.0-bdwgc) [object.c:3066] do_runtime_invoke 
+0x00007ffb8aa7e8fc (mono-2.0-bdwgc) [object.c:3113] mono_runtime_invoke 
+0x00007ff752e09224 (Unity) scripting_method_invoke
+0x00007ff752de8aa4 (Unity) ScriptingInvocation::Invoke
+0x00007ff752dd854e (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
+0x00007ff752dd8656 (Unity) MonoBehaviour::InvokeMethodOrCoroutineChecked
+0x00007ff752dd2b82 (Unity) MonoBehaviour::DelayedStartCall
+0x00007ff7528c15c4 (Unity) DelayedCallManager::Update
+0x00007ff752ad54a9 (Unity) `InitPlayerLoopCallbacks'::`2'::EarlyUpdateScriptRunDelayedStartupFrameRegistrator::Forward
+0x00007ff752abbfaa (Unity) ExecutePlayerLoop
+0x00007ff752abc136 (Unity) ExecutePlayerLoop
+0x00007ff752ac2259 (Unity) PlayerLoop
+0x00007ff753a339a9 (Unity) PlayerLoopController::UpdateScene
+0x00007ff753a1ec74 (Unity) PlayerLoopController::EnterPlayMode
+0x00007ff753a2ea37 (Unity) PlayerLoopController::SetIsPlaying
+0x00007ff753a31e39 (Unity) Application::TickTimer
+0x00007ff753e8791a (Unity) MainMessageLoop
+0x00007ff753e8c1eb (Unity) WinMain
+0x00007ff75525e2de (Unity) __scrt_common_main_seh
+0x00007ffc3afa26bd (KERNEL32) BaseThreadInitThunk
+0x00007ffc3bc4dfb8 (ntdll) RtlUserThreadStart
 
