@@ -2,7 +2,7 @@
  * @Author: NickPansh
  * @Date: 2023-01-27 08:21:16
  * @LastEditors: NickPansh
- * @LastEditTime: 2023-01-27 15:47:16
+ * @LastEditTime: 2023-01-29 16:50:55
  * @FilePath: \LogExtender\Assets\Framework\LogExtender\Scripts\Utils\LogExtenderConf.cs
  * @Description: Unity日志扩展配置
  * @
@@ -59,6 +59,11 @@ namespace WenQu
         public LogType releaseLogType = LogType.Error;
 
         /// <summary>
+        /// 输出log的正则表达式
+        /// </summary>
+        [HideInInspector]
+        public string regexPattern = @"[a-zA-Z0-9]*.cs:\d*";
+        /// <summary>
         /// 自定义文件名文件名
         /// </summary>
         [HideInInspector]
@@ -69,5 +74,8 @@ namespace WenQu
         /// </summary>
         [HideInInspector]
         public Encoding encodeFormat = Encoding.UTF8;
+
+
+
     }
 }
