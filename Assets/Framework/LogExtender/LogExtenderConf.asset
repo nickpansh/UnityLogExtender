@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: LogExtenderConf
   m_EditorClassIdentifier: 
   logToCustomFileWhenDev: 1
-  urlDevTrackingEvent: https://test-mlog.wenqu.site
-  urlReleaseTrackingEvent: https://mlog.wenqu.site
-  urlDevTrackingError: https://test-error.wenqu.site
-  urlReleaseTrackingError: https://error.wenqu.site
+  urlDevTrackingEvent: http://test-mlog.wenqu.site
+  urlReleaseTrackingEvent: http://mlog.wenqu.site
+  urlDevTrackingError: http://test-error.wenqu.site
+  urlReleaseTrackingError: http://error.wenqu.site
   devLogType: 3
   releaseLogType: 0
+  regexPattern: '[a-zA-Z0-9]*.cs:\d*'
   customFileName: game.log

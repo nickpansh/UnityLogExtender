@@ -2,7 +2,7 @@
  * @Author: NickPansh
  * @Date: 2023-01-27 17:25:45
  * @LastEditors: NickPansh
- * @LastEditTime: 2023-01-27 20:23:03
+ * @LastEditTime: 2023-01-29 17:40:40
  * @FilePath: \LogExtender\Assets\Framework\LogExtender\Scripts\Tracker\Impl\HttpTrackingReporter.cs
  * @Description: http埋点上传工具
  * @
@@ -13,24 +13,28 @@ using UnityEngine.Networking;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using System.Text;
 
 namespace WenQu
 {
-    //TODO:这个应该用Helper，不用做单例
-    public class HttpTrackingReporter : Singleton<HttpTrackingReporter>, ITrackingReporter
+    public class HttpTrackingReporter : MonoBehaviour, ITrackingReporter
     {
-        private void Report(Dictionary<string, string> dict, string url, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
+
+        private void Report(string url, Dictionary<string, string> dict, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
         {
             if (method == TrackerConst.HttpMethod.Get)
             {
+
                 if (dict != null)
                 {
-                    url = url + "?";
+                    StringBuilder sb = new StringBuilder();
+                    sb = sb.Append(url);
+                    sb = sb.Append("?");
                     foreach (var item in dict)
                     {
-                        url = string.Format("%s&%s=%s", url, item.Key, item.Value);
+                        sb = sb.Append(string.Format("{0}={1}", item.Key, item.Value));
                     }
-                    StartCoroutine(Get(url));
+                    StartCoroutine(Get(sb.ToString()));
                 }
             }
             else
@@ -39,12 +43,8 @@ namespace WenQu
             }
         }
 
-        public void ReportError(Dictionary<string, string> dict, string url, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
-        {
-            Report(dict, url, method);
-        }
 
-        public void ReportTrackingEvent(string eventId, Dictionary<string, string> dict, string url, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
+        public void ReportTrackingEvent(string url, string eventId, Dictionary<string, string> dict, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
         {
             if (string.IsNullOrEmpty(eventId))
             {
@@ -55,7 +55,8 @@ namespace WenQu
             {
                 dict.Add("eventId", eventId);
             }
-            Report(dict, url, method);
+            Debug.LogFormat("[TAG]{0}", eventId);
+            Report(url, dict, method);
         }
 
         IEnumerator Post(string url, Dictionary<string, string> dict)
@@ -71,10 +72,17 @@ namespace WenQu
             UnityWebRequest webRequest = UnityWebRequest.Post(url, form);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.ProtocolError)
-                Debug.Log(webRequest.error);
+
             {
+                Debug.LogFormat("{0} posted.", url);
                 yield return webRequest.downloadHandler.text;
+
             }
+            else
+            {
+                throw new System.NotImplementedException();
+            }
+
         }
         private IEnumerator Get(string body)
         {
@@ -82,9 +90,19 @@ namespace WenQu
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.ProtocolError)
             {
+                Debug.LogFormat("{0} posted.", body);
                 yield return webRequest.downloadHandler.text;
             }
+            else
+            {
+                throw new System.NotImplementedException();
+            }
         }
+        public void ReportError(string url, Dictionary<string, string> dict, TrackerConst.HttpMethod method = TrackerConst.HttpMethod.Get)
+        {
+            Report(url, dict, method);
+        }
+
 
     }
 }

@@ -2,7 +2,7 @@
  * @Author: NickPansh
  * @Date: 2023-01-27 06:50:53
  * @LastEditors: NickPansh
- * @LastEditTime: 2023-01-29 15:19:38
+ * @LastEditTime: 2023-01-29 17:22:14
  * @FilePath: \LogExtender\Assets\Framework\LogExtender\Scripts\LogExtender.cs
  * @Description: Unity日志拓展类
  * @
@@ -22,6 +22,7 @@ namespace WenQu
         #region private variables
         // 文件记录器，用于写自定义文件
         private static FileAppender _fileAppender;
+        private static ITrackingReporter _trackingReporter;
         // 格式化输出样式
         private const string _formatInfo = "[{0}]|{1,-5}|{2}|:{3}";
         private const string _formatErr = "[{0}]|{1,-5}|:{2}\r\n{3}";
@@ -29,6 +30,11 @@ namespace WenQu
         // 时间格式化输出样式
         private const string _timeFormat = "yyyy.MM.dd HH:mm:ss,fff";
 
+        // 埋点上报url
+        private string _urlTrackingEvent = null;
+
+        // 报错上报url
+        private string _urlTrackingError = null;
         #endregion
 
         #region  properties
@@ -67,17 +73,19 @@ namespace WenQu
                 {
                     LoadFileAppender();
                 }
+                LoadTrackingReporter();
                 // 接收log线程
                 Application.logMessageReceivedThreaded += HandleLog;
             }
 
         }
-       
+
         private void OnDestroy()
         {
             Application.logMessageReceivedThreaded -= HandleLog;
             _fileAppender?.Dipose();
         }
+
         // 加载FileAppender
         private void LoadFileAppender()
         {
@@ -90,19 +98,13 @@ namespace WenQu
             _fileAppender = new FileAppender(pathCustomLog, conf.encodeFormat);
         }
 
-        /// <summary>
-        /// 上报埋点
-        /// </summary>
-        /// <param name="eventId">string,事件ID</param>
-        /// <param name="dict">字典，额外信息</param>
-        public void Report(string eventId, Dictionary<string, string> dict = null)
+        // 加载上报器
+        private void LoadTrackingReporter()
         {
-            string url = Debug.isDebugBuild ? conf.urlDevTrackingEvent : conf.urlReleaseTrackingEvent;
-            if (!string.IsNullOrEmpty(url))
-            {
-                HttpTrackingReporter.Instance.ReportTrackingEvent(eventId, dict, url);
-                Debug.LogFormat("上报事件。eventId={0},dict={1}", eventId, dict);
-            }
+            _urlTrackingEvent = Debug.isDebugBuild ? conf.urlDevTrackingEvent : conf.urlReleaseTrackingEvent;
+            _urlTrackingError = Debug.isDebugBuild ? conf.urlDevTrackingError : conf.urlReleaseTrackingError;
+            _trackingReporter = this.gameObject.AddComponent<HttpTrackingReporter>();
+
         }
 
         /// <summary>
@@ -121,14 +123,13 @@ namespace WenQu
         }
 
         /// <summary>
-        /// 获得剪短的stackTrace描述
+        /// 获得堆栈的简短描述(一般是文件名和行号)
         /// </summary>
         /// <param name="stackTrace"></param>
         /// <returns></returns>
         private string GetBriefStackTrace(string stackTrace)
         {
-            // TODO:正则表达式还需要修改
-            var sc = Regex.Match(stackTrace, @"[a-zA-Z0-9]*.cs:\d");
+            var sc = Regex.Match(stackTrace, conf.regexPattern);
             return sc?.Value;
         }
 
@@ -141,30 +142,32 @@ namespace WenQu
         private void HandleLog(string logString, string stackTrace, LogType type)
         {
 
-            // dev版写入自定义文件
-            if (conf.logToCustomFileWhenDev && Debug.isDebugBuild)
+            // 写入自定义文件
+            if (_fileAppender != null)
             {
                 string log = FormatLog(logString, stackTrace, type, DateTime.Now);
                 _fileAppender.AppendLog(log);
             }
 
             // Error+上传报错服务器
-#if !UNITY_EDITOR
-            if(type == LogType.Error || type == LogType.Exception){
-                string url = Debug.isDebugBuild ? conf.urlDevTrackingError : conf.urlReleaseTrackingError;
-                if(!string.IsNullOrEmpty(url)){
-                    Dictionary<string,string> dict = new Dictionary<string,string>();
-                    dict.Add("log",logString);
-                    dict.Add("stackTrace",stackTrace);
-                    dict.Add("time",DateTime.Now);
-                    HttpTrackingReporter.Instance.ReportError(dict,url);
+            if (type == LogType.Error || type == LogType.Exception)
+            {
+                if (!string.IsNullOrEmpty(_urlTrackingError))
+                {
+                    Dictionary<string, string> dict = new Dictionary<string, string>();
+                    dict.Add("log", logString);
+                    dict.Add("stackTrace", stackTrace);
+                    dict.Add("time", DateTime.Now.ToString());
+                    _trackingReporter.ReportError(_urlTrackingError, dict);
                 }
             }
-#endif
+        }
+
+        public void LogTrack(string eventId, Dictionary<string, string> dict)
+        {
+            _trackingReporter.ReportTrackingEvent(_urlTrackingEvent, eventId, dict);
         }
         #endregion
-
-
 
     }
 }
