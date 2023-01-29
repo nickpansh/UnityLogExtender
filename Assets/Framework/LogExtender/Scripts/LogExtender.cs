@@ -2,7 +2,7 @@
  * @Author: NickPansh
  * @Date: 2023-01-27 06:50:53
  * @LastEditors: NickPansh
- * @LastEditTime: 2023-01-29 17:22:14
+ * @LastEditTime: 2023-01-29 17:55:52
  * @FilePath: \LogExtender\Assets\Framework\LogExtender\Scripts\LogExtender.cs
  * @Description: Unity日志拓展类
  * @
@@ -73,7 +73,9 @@ namespace WenQu
                 {
                     LoadFileAppender();
                 }
+#if !UNITY_EDITOR
                 LoadTrackingReporter();
+#endif
                 // 接收log线程
                 Application.logMessageReceivedThreaded += HandleLog;
             }
@@ -165,7 +167,10 @@ namespace WenQu
 
         public void LogTrack(string eventId, Dictionary<string, string> dict)
         {
-            _trackingReporter.ReportTrackingEvent(_urlTrackingEvent, eventId, dict);
+            if (_urlTrackingEvent != null)
+            {
+                _trackingReporter.ReportTrackingEvent(_urlTrackingEvent, eventId, dict);
+            }
         }
         #endregion
 
